@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather</title>
+</head>
+<body>
+    <div>
+        <p>Введите название вашего города:</p>
+        <input id="cityName">
+        <button id="btnCity">Получить</button>
+        <p id="cityTemperature">0</p>
+    </div>
+
+<script>
+    const btnCity = document.getElementById('btnCity');
+    btnCity.addEventListener('click', async function(event){
+        event.preventDefault();
+        const cityName = document.getElementById('cityName').value
+        if (cityName != ''){
+            url = "/api/weather/post"
+            data = {"city": cityName}
+            response = await fetch(url, {
+                method: "POST",
+                headers: {
+                    'accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            const cityTemperature = document.getElementById('cityTemperature');
+            let temperature = await response.json()
+            console.log(temperature)
+            cityTemperature.textContent = temperature.temperature
+        }
+    })
+</script>
+</body>
+</html>
